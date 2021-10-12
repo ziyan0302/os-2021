@@ -8,7 +8,6 @@ int arr[25];
 int main(void){
     struct timeval start, end;
     gettimeofday(&start, NULL);
-    printf("seconds: %ld, microseconds: %ld\n", start.tv_sec, start.tv_usec);
     int arr[] = {9,9,5,8,3,2,10,7,8,9,9,5,8,3,2,10,7,8,9,9,5,8,3,2,10};
     int a = 9;
     int count = 0;
