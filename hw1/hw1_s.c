@@ -1,14 +1,18 @@
 # include <stdio.h>
 # include <sys/time.h>
 
-int arr[25];
+# define amount 10000000
+static int arr[amount];
+
 // int gettimeofday (struct timeval *tp, struct timezone *tz);
 
 
 int main(void){
     struct timeval start, end;
     gettimeofday(&start, NULL);
-    int arr[] = {9,9,5,8,3,2,10,7,8,9,9,5,8,3,2,10,7,8,9,9,5,8,3,2,10};
+    for (int i=0; i<amount; i++) arr[i] = i;
+    // printf("arr= \n");
+    int len = (int)(sizeof(arr)/sizeof(arr[0]));
     int a = 9;
     int count = 0;
     // printf("a = %d\n", a);
@@ -16,7 +20,7 @@ int main(void){
     //     printf("arr[%d] = %d\n", i, arr[i]);
     // }
 
-    for (int i = 0; i<=24; i++){
+    for (int i = 0; i<=len; i++){
         if (arr[i] == a){
             count++;
         }
