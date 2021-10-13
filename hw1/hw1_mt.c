@@ -15,9 +15,12 @@ static int a = 2, ans;
 static int count = 0;
 static int process_num = 2;
 
+
+
 int main(void){
     struct timeval start, end;
-    pid_t pid;
+    // int count;
+    pthread_t tid;
     
     for (int i=0; i<amount; i++) arr[i] = i;
     // printf("arr= \n");
@@ -27,44 +30,14 @@ int main(void){
     gettimeofday(&start, NULL);
 
     for (int i = 0; i < process_num; i++){
-        pid = fork();
-
-        if (pid == -1){
-            perror("fork(): ");
-            exit(-1);
-        } else if (pid == 0){
-            // printf("[child %d]child process %d\n", getpid(), getpid());
-            c_s = len/process_num *i;
-            // printf("[child %d]c_s: %d\n", getpid(), c_s);
-
-            for (int j = c_s; j<( c_s+len/process_num); j++){
-                // printf("[child %d]arr part: %d", getpid(), arr[j]);
-                if (arr[j] == a){
-                    count++;
-            }
-            // printf("\n");
-                
-            }
-            // printf("[child %d]count= %d\n", getpid(), count);
-            exit(count);
-        }
-
+        pthread_create(&tid, NULL, counting, &i);
 
     }
 
 
     for (int i =0; i<process_num; i++){
-        pid = wait(&count);
-        if (pid == -1){
-            perror("wait error");
-        } else{
-            if (WIFSIGNALED(count) != 0){
-                printf("[parent]child killed by %d\n", WTERMSIG(count));
-            }
-            else if (WIFEXITED(count) != 0){
-                ans += WEXITSTATUS(count);
-            }
-        }
+        tid = wait(&count);
+        
     }
 
     gettimeofday(&end, NULL);
@@ -74,4 +47,17 @@ int main(void){
     
     printf("process time: %ld microseconds\n", ((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec)));
     return 0;
+}
+
+void* counting(void* i){
+    printf("do counting");
+    int len = (int)(sizeof(arr)/sizeof(arr[0]));
+    int c_s = len/process_num * (int* )i;
+    // printf("[child %d]c_s: %d\n", getpid(), c_s);
+
+    for (int j = c_s; j<( c_s+len/process_num); j++){
+        // printf("[child %d]arr part: %d", getpid(), arr[j]);
+        if (arr[j] == a){
+            count++;
+    pthread_exit();
 }
