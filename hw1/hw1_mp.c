@@ -5,9 +5,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 
-// int gettimeofday (struct timeval *tp, struct timezone *tz);
-// static int arr[] = {9,9,5,8,3,2,10,7,8,9,9,5,8,3,2,10,7,8,9,9,5,8,3,2,10};
-# define amount 10000000
+# define amount 100000000
 static int arr[amount];
 
 

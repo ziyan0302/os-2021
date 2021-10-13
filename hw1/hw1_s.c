@@ -1,7 +1,7 @@
 # include <stdio.h>
 # include <sys/time.h>
 
-# define amount 10000000
+# define amount 1000000000
 static int arr[amount];
 
 // int gettimeofday (struct timeval *tp, struct timezone *tz);
