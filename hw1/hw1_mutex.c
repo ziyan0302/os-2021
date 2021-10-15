@@ -20,12 +20,12 @@ static int i_c[amount];
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void* counting(void* k){
+    printf("[child %ld]call lock \n", pthread_self());
+    pthread_mutex_lock( &mutex );
     printf("[child %ld]do counting %d\n", pthread_self(), *((int *)k));
     int len = (int)(sizeof(arr)/sizeof(arr[0]));
     int c_s = len/thread_num * *((int *)k);
     int count = 0;
-    printf("[child %d]c_s: %d\n", getpid(), c_s);
-    printf("[child %ld]arr part: \n", pthread_self());
     
     for (int j = c_s; j<( c_s+len/thread_num); j++){
         // printf("%d ", arr[j]);
@@ -33,8 +33,10 @@ void* counting(void* k){
             count++;
         }
     }
-    pthread_mutex_lock( &mutex );
+
     ans += count;
+
+    printf("[child %ld]ans complete \n", pthread_self());
     pthread_mutex_unlock( &mutex );
     printf("\n");
     printf("[child %ld]count: %d\n", pthread_self(), count);
@@ -42,8 +44,9 @@ void* counting(void* k){
 }
 
 
-int main(void){
-    // printf("ok\n");
+int main(int argc, char *argv[]){
+    // int datasize = atoi(argv[1]);
+    // thread_num = atoi(argv[2]);
     struct timeval start, end;
     void *result = 0;
     pthread_t tid[thread_num];
